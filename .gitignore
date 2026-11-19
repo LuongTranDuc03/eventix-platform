@@ -1,0 +1,31 @@
+# File biên dịch & thư viện (Tuyệt đối không push vì rất nặng)
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# File cấu hình của các IDE (IntelliJ, VS Code, Eclipse)
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+.classpath
+.project
+.settings/
+
+# Nhật ký hệ thống & file tạm của OS
+*.log
+.DS_Store
+Thumbs.db
+
+# Dữ liệu volume của Docker (nếu bạn lỡ map ra thư mục local)
+postgres_data/
+redis_data/
+rabbitmq_data/
+
+# Cấu hình chứa thông tin nhạy cảm (Mật khẩu, JWT secret)
+**/src/main/resources/application.yml
+**/src/main/resources/application-*.yml
+!**/src/main/resources/application.yml.example
+!**/src/main/resources/application-*.yml.example

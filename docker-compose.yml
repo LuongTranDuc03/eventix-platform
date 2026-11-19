@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # 1. Cơ sở dữ liệu chính: PostgreSQL 16
+  postgres:
+    image: postgres:16-alpine
+    container_name: eventix-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: eventix_db
+      POSTGRES_USER: eventix_admin
+      POSTGRES_PASSWORD: eventix_secret_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - eventix-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U eventix_admin -d eventix_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Bộ đệm & Khóa phân tán: Redis 7
+  redis:
+    image: redis:7-alpine
+    container_name: eventix-redis
+    restart: always
+    command: redis-server --requirepass eventix_redis_password --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - eventix-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-a", "eventix_redis_password", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 3. Message Broker: RabbitMQ 3 (Kèm giao diện quản trị Management Web)
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: eventix-rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: eventix_rabbit
+      RABBITMQ_DEFAULT_PASS: eventix_rabbit_password
+    ports:
+      - "5672:5672" # Cổng giao thức AMQP (cho Spring Boot kết nối)
+      - "15672:15672" # Cổng giao diện Web Management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - eventix-network
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "check_running" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  eventix-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  rabbitmq_data:

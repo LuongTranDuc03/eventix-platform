@@ -1,0 +1,66 @@
+# ============================================================================
+# EVENTIX BACKEND - FILE MẪU CẤU HÌNH (TEMPLATE)
+# HƯỚNG DẪN:
+# 1. Sao chép (copy) file này thành 'application.yml' trong cùng thư mục
+# 2. Thay đổi các giá trị tài khoản / mật khẩu thực tế theo môi trường của bạn
+# ============================================================================
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: eventix-backend
+
+  # 1. Bật Virtual Threads trên Java 21 (Xử lý hàng ngàn request không tốn RAM thread pool)
+  threads:
+    virtual:
+      enabled: true
+
+  # 2. Kết nối PostgreSQL
+  datasource:
+    url: jdbc:postgresql://localhost:5433/eventix_db
+    username: your_postgres_user
+    password: your_postgres_password
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+
+  # 3. Hibernate JPA
+  jpa:
+    hibernate:
+      ddl-auto: validate # Không để Hibernate tự tạo bảng, để Flyway quản lý
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+
+  # 4. Flyway Migration
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+  # 5. Kết nối Redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: your_redis_password
+      timeout: 2000ms
+
+  # 6. Kết nối RabbitMQ
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: your_rabbitmq_user
+    password: your_rabbitmq_password
+
+# 7. JWT Config (Key tối thiểu 256-bit cho thuật toán HS256)
+app:
+  jwt:
+    secret: YOUR_JWT_SECRET_KEY_MINIMUM_256_BITS_BASE64
+    expiration-ms: 86400000 # 24 giờ
+
