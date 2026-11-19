@@ -149,3 +149,7 @@ WHERE r.name = 'ROLE_ATTENDEE' AND p.code IN ('order:hold');
 INSERT INTO role_permissions (role_id, permission_id)
 SELECT r.id, p.id FROM roles r, permissions p 
 WHERE r.name = 'ROLE_STAFF' AND p.code IN ('ticket:scan');
+
+-- Cấp quyền ROLE_ORGANIZER và ROLE_ADMIN cho User có id = 1
+INSERT INTO user_roles (user_id, role_id) 
+SELECT 1, id FROM roles WHERE name IN ('ROLE_ORGANIZER', 'ROLE_ADMIN');

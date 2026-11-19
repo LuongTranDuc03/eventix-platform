@@ -33,9 +33,11 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Công khai các API đăng ký/đăng nhập
+                        // Public các API xác thực
                         .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login").permitAll()
-                        // Tất cả các request còn lại đều phải có Bearer Token
+                        // Public API xem chi tiết sự kiện cho mọi người
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/events/**").permitAll()
+                        // Các API còn lại bắt buộc có Token
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

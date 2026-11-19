@@ -1,0 +1,22 @@
+package com.eventix.modules.event.dto;
+
+import com.eventix.modules.event.entity.ZoneType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ZoneResponse {
+    private Long id;
+    private String name;
+    private ZoneType zoneType;
+    private BigDecimal price;
+    private Integer totalCapacity;
+    private Integer availableCapacity;
+}
