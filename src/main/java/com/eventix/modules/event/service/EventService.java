@@ -96,7 +96,7 @@ public class EventService {
         // B1: Hỏi Redis trước (tốn ~1ms)
         Object cachedData = redisTemplate.opsForValue().get(cacheKey);
         if (cachedData != null) {
-            log.info("🔥 CACHE HIT: Lấy thông tin sự kiện [{}] từ Redis", eventId);
+            // log.info("🔥 CACHE HIT: Lấy thông tin sự kiện [{}] từ Redis", eventId);
             return (EventResponse) cachedData;
         }
 

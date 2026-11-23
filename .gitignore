@@ -29,3 +29,9 @@ rabbitmq_data/
 **/src/main/resources/application-*.yml
 !**/src/main/resources/application.yml.example
 !**/src/main/resources/application-*.yml.example
+
+# K6 Load testing scripts & test reports (Không đẩy lên Git)
+load-test.js
+test-report.html
+*.html
+
